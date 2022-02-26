@@ -1,0 +1,44 @@
+# Run python script to load delta/initial dump to mysql db
+python3 main.py cdnTransfer/syncCheck/rsync --gcp_project $PROJECT_ID --config_key $DATASTORE_CONFIG_KEY
+
+# Datastore entity schema
+{
+    "gcp_project" : "(str) GCP_PROJECT_ID",
+    "logger_name" : "(str) GCP_LOGGER_NAME (default=object-transfer-tool)",
+    "gcs_bucket" : "(str) GCS_BUCKET",
+    "gcs_root_prefix": "(str) GCS_ROOT_FOLDER",
+    "mysql_table" : "(str) MYSQL_TABLE_WHERE_TRANSFER_STATE_IS_STORED",
+    "aws_region" : "(str) AWS_BUCKET_REGION",
+    "s3_bucket" : "(str) S3_BUCKET_ID",
+    "s3_root_prefix" : "(str) S3_ROOT_FOLDER",
+    "storage_class" : "(str) STORAGE_CLASS (default=STANDARD)",
+    "cloudfront_url_host_pre" : "(str) CLOUDFRONT_URL_AND_PREFIX",
+    "replace_key_parts" : "(dict) KEY_VALUE_PAIR_OF_SUBSTRINGS_TO_REPLACE_IN_PARSING_CDN_URL (default=None)",
+    "url_signer_private_key_secret_id" : "(str) SECRET_MANAGER_SECRET_CONTAINING_URL_SIGNING_PRIVATE_KEY (default=None)",
+    "url_signer_key_pair_id" : "(str) AWS_KEY_PAIR_ID_FOR_URL_SIGNING (default=None)",
+    "signed_url_expire_seconds" : "(int) SIGNED_URL_EXPIRE_SECONDS (default=3600*24*7)",
+    "last_modified_before" : "(datetime) LAST_MODIFIED_BEFORE (default=latest)",
+    "last_modified_after" : "(datetime) LAST_MODIFIED_AFTER (default=initial)",
+    "pubsub_subscription_id" : "(str) PUBSUB_SUBSCRIPTION_ID_FROM_WHERE_LIST_IS_PULLED",
+    "num_messages" : "(str) NUM_MESSAGES_TO_PULL_PER_PUBSUB_CALL (default=1)",
+    "start_query" : "(str) SQL_QUERY_TO_UPDATE_PROCESSING_FLAGS",
+    "end_query" : "(str) SQL_QUERY_TO_UPDATE_WHEN_PROCESSING_IS_FINISHED",
+    "error_pubsub_topic_id" : "(str) PUBSUB_TOPIC_ID_WHERE_ERROR_KEYS_ARE_PUSHED",
+    "credentials_secret_id" : "(str) SECRET_MANAGER_SECRET_ID"
+}
+
+# Secret manager secret payload
+{
+    "aws_key_id" : "",
+    "aws_key_secret" : "",
+    "mysql_config" : {
+        "host": "(str) HOST_NAME/IP",
+        "user": "(str) MYSQL_USER",
+        "password": "(str) DB_PASSWORD",
+        "database": "(str) DB_NAME",
+        "ssl_disabled": "(bool) true recommended for internal connections"
+    }
+}
+
+# Secret manager secret payload of url signer private key if signed url is used
+PRIVATE_KEY

@@ -1,0 +1,10 @@
+rsa
+boto3
+botocore
+google-api-core
+google-cloud-datastore 
+google-cloud-secret-manager
+google-cloud-logging
+google-cloud-pubsub
+google-cloud-storage
+mysql-connector-python

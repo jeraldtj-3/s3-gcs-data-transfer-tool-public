@@ -1,0 +1,34 @@
+# Run python script to load delta/initial dump to mysql db
+python3 main.py publishObjectsList/publishDirList --gcp_project $PROJECT_ID --config_key $DATASTORE_CONFIG_KEY
+
+# Datastore entity schema
+{
+    "gcp_project" : "(str) GCP_PROJECT_ID",
+    "logger_name" : "(str) GCP_LOGGER_NAME (default=object-transfer-tool)",
+    "mysql_table" : "(str) MYSQL_TABLE_WHERE_TRANSFER_STATE_IS_STORED",
+    "aws_region" : "(str) AWS_BUCKET_REGION",
+    "s3_bucket" : "(str) S3_BUCKET_ID",
+    "s3_root_prefix" : "(str) S3_ROOT_FOLDER",
+    "storage_class" : "(str) STORAGE_CLASS (default=STANDARD)",
+    "last_modified_before" : "(datetime) LAST_MODIFIED_BEFORE (default=latest)",
+    "last_modified_after" : "(datetime) LAST_MODIFIED_AFTER (default=initial)",
+    "pubsub_topic_id" : "(str) PUBSUB_TOPIC_ID",
+    "max_messages_per_batch" : "(int) MAX_MESSAGES_PUSHED_TO_PUBSUB_PER_CALL (default=10)",
+    "num_single_message" : "(int) OBJECTS_CONTAINED_PER_MESSAGE (default=10)",
+    "pull_query" : "(str) SQL_QUERY_TO_PULL_LIST_TO_PUBLISH",
+    "update_query" : "(str) SQL_QUERY_TO_UPDATE_SQL_ENTRIES_WHICH_ARE_PUBLISHED",
+    "credentials_secret_id" : "(str) SECRET_MANAGER_SECRET_ID"
+}
+
+# Secret manager secret payload
+{
+    "aws_key_id" : "",
+    "aws_key_secret" : "",
+    "mysql_config" : {
+        "host": "(str) HOST_NAME/IP",
+        "user": "(str) MYSQL_USER",
+        "password": "(str) DB_PASSWORD",
+        "database": "(str) DB_NAME",
+        "ssl_disabled": "(bool) true recommended for internal connections"
+    }
+}

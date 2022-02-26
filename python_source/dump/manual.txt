@@ -1,0 +1,25 @@
+# Get dump of subfolders list in s3 bucket
+aws s3 ls s3://S3_PATH > $DUMP_FILE 2>error-$DUMP_FILE
+
+# Run python script to load delta/initial dump to mysql db
+python3 main.py dumpToMySQL --gcp_project $PROJECT_ID --config_key $DATASTORE_CONFIG_KEY --dump_file $DUMP_FILE
+
+# Datastore entity schema
+{
+    "gcp_project" : "(str) GCP_PROJECT_ID",
+    "logger_name" : "(str) GCP_LOGGER_NAME (default=object-transfer-tool)",
+    "mysql_table" : "(str) MYSQL_TABLE_WHERE_TRANSFER_STATE_IS_STORED",
+    "insert_query" : "(str) MYSQL_QUERY_TO_INSERT_SUBFOLDER_ENTRY",
+    "credentials_secret_id" : "(str) SECRET_MANAGER_SECRET_ID"
+}
+
+# Secret manager secret payload
+{
+    "mysql_config" : {
+        "host": "(str) HOST_NAME/IP",
+        "user": "(str) MYSQL_USER",
+        "password": "(str) DB_PASSWORD",
+        "database": "(str) DB_NAME",
+        "ssl_disabled": "(bool) true recommended for internal connections"
+    }
+}
